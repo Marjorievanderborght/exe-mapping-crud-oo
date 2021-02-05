@@ -7,11 +7,11 @@ class Thenews
     private string $theUserLogin;
 
     // EXERCICE créez les autres attributs (noms des champs dans le table "thenews")
-    private id $idtheNews;
+    private int $idtheNews;
     private string $theNewsTitle;
     private string $theNewsText;
     private string $theNewsDate;
-    private id $theUser_idtheUser;
+    private int $theUser_idtheUser;
 
 
     // EXERCICE créez le constructeur
@@ -46,12 +46,12 @@ class Thenews
         return $this->theNewsText;
     }
 
-    public function getTheNewsDate(): ?string
+    public function getTheNewsDate(): string
     {
         return $this->theNewsDate;
     }
 
-    public function getTheUser_idTheUser(): int 
+    public function getTheUser_idTheUser(): int
     {
         return $this->theUser_idtheUser;
     }
@@ -78,7 +78,9 @@ class Thenews
         }else {
             $this->theUserLogin = $theUserLogin;
         }
-    }public function setIdTheNews(int $idtheNews): void
+    }
+    
+    public function setIdTheNews(int $idtheNews): void
     {
         $this->idtheNews= $idtheNews;
     }
@@ -93,6 +95,35 @@ class Thenews
         }else{
             $this->theNewsTitle = $title;
         }
+
+        
+    }
+
+    public function setTheNewsText(string $theNewsText): void
+    {
+        $text = strip_tags(trim($theNewsText),"<br>,<p>,<div>,<a>,<img>");
+        if(empty($text)){
+            print("Votre texte ne peut être vide");
+        }else {
+            $this->theNewsText = $theNewsText;
+        }
+    }
+
+public function setTheNewsDate(string $theNewsDate): void
+    {
+
+        // vérification d'un datetime valide (à perfectionner) grâce à une regex (expression régulière)
+        $regex = preg_grep("/^(\d{4})-(\d{2})-([\d]{2}) (\d{2}):([0-5]{1})([0-9]{1}):([0-5]{1})([0-9]{1})$/",[$theNewsDate]);
+        if(empty($regex)){
+            print("Format de date non valide");
+        }else {
+            $this->theNewsDate = $theNewsDate;
+        }
+    }
+    public function setTheUser_idTheUser(int $theUser_idtheUser): void
+    {
+        $this->theUser_idtheUser = $theUser_idtheUser;
+        ;
     }
 
 
