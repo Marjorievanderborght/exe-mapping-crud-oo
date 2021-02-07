@@ -37,4 +37,37 @@ public function readOneNewsById(int $id): Array{
     // pas de résultats
     return [];
 }
+
+// insert into table Article
+public function insertNews(News $item){
+    $sql = "INSERT INTO thenews (theNewsTitle,theNewsText,theNewsDate) VALUES (?,?,?)";
+    $request = $this->db->prepare($sql);
+    // essai d'insertion
+    try {
+        $request->execute([
+                $item->getArticleTitle(),
+                $item->getArticleSlug(),
+                $item->getArticleText(),
+                $item->getArticleAuthor()]
+        );
+        return true;
+    // si erreur d'insertion
+    }catch (Exception $e){
+        // si c'est le slug qui est dupliqué (champs unique)
+        if(strstr($e->getMessage(),"articleSlug_UNIQUE")){
+            // on réinsert en changeant le nom du slug
+            $request->execute([
+                    $item->getArticleTitle(),
+                    $item->getArticleSlug()."-".uniqid(),
+                    $item->getArticleText(),
+                    $item->getArticleAuthor()]
+            );
+            return true;
+
+        }else{
+            return $e->getMessage();
+        }
+    }
+
+}
 }
