@@ -12,22 +12,38 @@ class ThenewsManager
     public function __construct(MyPDO $connect){
         $this->db = $connect;
     }
+    //fonction pour sélectionner le login utilisateur
+    public function selectTheUserLog($id){
+        $query = "SELECT idtheUser, theUserLogin FROM theuser WHERE idtheUser= ?";
+        $request = $this->db->prepare($query);
+        try {
+            $request->execute([$id]);
+            if ($request->rowCount()) {
+                $login = $request->fetch(PDO::FETCH_ASSOC);
+                return $login['theUserLogin'];
+            }
+            return [];
+        }catch(PDOException $e){
+            return $e->getMessage();
+        }
+    }
 
-// Read all from News
-public function readAllNews(): Array {
-    $sql = "SELECT * FROM thenews ORDER BY theNewsDate DESC";
-    $recupAll = $this->db->query($sql);
+
+// Lecture de toutes les News
+public function readAllTheNews(): Array {
+    $query = "SELECT * FROM thenews ORDER BY theNewsDate DESC";
+    $recupAll = $this->db->query($query);
     if($recupAll->rowCount()) {
         return $recupAll->fetchAll(PDO::FETCH_ASSOC);
     }else{
         return [];
     }
 }
-// select one News by id
-public function readOneNewsById(int $id): Array{
-    // prepare request
-    $sql = "SELECT * FROM thenews WHERE idtheNews=?";
-    $prepare = $this->db->prepare($sql);
+// Sélection d'une News par son id
+public function UniqNewsById(int $id): Array{
+    // préparation de la requête
+    $query = "SELECT * FROM thenews WHERE idtheNews=?";
+    $prepare = $this->db->prepare($query);
     $prepare->bindValue(1,$id,PDO::PARAM_INT);
     $prepare->execute();
     // on a une ligne de résultat
@@ -37,37 +53,70 @@ public function readOneNewsById(int $id): Array{
     // pas de résultats
     return [];
 }
-
-// insert into table Article
-public function insertNews(News $item){
-    $sql = "INSERT INTO thenews (theNewsTitle,theNewsText,theNewsDate) VALUES (?,?,?)";
-    $request = $this->db->prepare($sql);
-    // essai d'insertion
+//Sélection d'une News par son auteur
+public function selectTheNewsByAuthor($id): array {
+    $query = "SELECT * FROM thenews WHERE theUser_idtheUser = $id ORDER BY theNewsDate DESC";
+    $read = $this->db->query($query);
+    if ($read->rowCount()) {
+        return $read->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        return [];
+    }
+}
+// insertion dans la table thenews
+public function insertNews(Thenews $datas){
+    $query = "INSERT INTO thenews (theNewsTitle, theNewsText, theNewsDate, theUser_idtheUser) VALUES (?,?,?,?); ";
+    $request = $this->db->prepare($query);
     try {
         $request->execute([
-                $item->getArticleTitle(),
-                $item->getArticleSlug(),
-                $item->getArticleText(),
-                $item->getArticleAuthor()]
+            $datas->getTheNewsTitle(),
+            $datas->getTheNewsText(),
+            $datas->getTheNewsDate(),
+            $datas->getTheUser_idTheUser()]
         );
         return true;
-    // si erreur d'insertion
-    }catch (Exception $e){
-        // si c'est le slug qui est dupliqué (champs unique)
-        if(strstr($e->getMessage(),"articleSlug_UNIQUE")){
-            // on réinsert en changeant le nom du slug
-            $request->execute([
-                    $item->getArticleTitle(),
-                    $item->getArticleSlug()."-".uniqid(),
-                    $item->getArticleText(),
-                    $item->getArticleAuthor()]
-            );
-            return true;
-
-        }else{
+    } catch (Exception $e){
             return $e->getMessage();
-        }
     }
 
+
+    
 }
+//Suppression d'une News par son ID
+public function deleteTheNewsById(int $id) {
+    $query = "DELETE FROM thenews WHERE idtheNews = ?";
+    $prepare = $this->db->prepare($query);
+    try{
+        $prepare->execute([$id]);
+        return true;
+    }catch(PDOException $exception){
+        return $exception->getMessage();
+    }
 }
+//Mise à jour d'une news par son ID
+public function updateTheNewsById(Thenews $theNews, int $idTheNews){
+    if($idTheNews == $theNews->getIdTheNews()){
+        $query = "UPDATE thenews SET theNewsTitle = :theNewsTitle,theNewsText= :theNewsText,theNewsDate= :theNewsDate,theUser_idtheUser= :theUser_idtheUser WHERE idtheNews :idTheNews";
+        $prepare= $this->db->prepare($query);
+        $prepare->bindValue("idTheNews",$theNews->getIdTheNews(),PDO::PARAM_INT);
+        $prepare->bindValue("theNewsTitle",$theNews->getTheNewsTitle(),PDO::PARAM_STR);
+        $prepare->bindValue("theNewsText",$theNews->getTheNewsText(),PDO::PARAM_STR);
+        $prepare->bindValue("theNewsDate",$theNews->getTheNewsDate(),PDO::PARAM_STR);
+        $prepare->bindValue("theUser_idtheUser",$theNews->getTheUser_idTheUser(),PDO::PARAM_STR);
+        try{
+            $prepare->execute();
+            return true;
+        }catch (PDOException $e){
+            return $e->getMessage();
+        }
+    }else{
+        return "Pas touche à mes articles, non mais !";
+    }
+}
+// function qui va permettre de couper les x premiers caractères sans couper de mots, le mot clef static va permettre d'utiliser cette méthode sans devoir instancier la classe ThenewsManager
+public static function cutTheText(string $text, int $nbChars): string{
+    $cutText = substr($text,0,$nbChars);
+    return $cutText = substr($cutText,0,strrpos($cutText," "));
+}
+    }
+     
