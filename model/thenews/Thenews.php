@@ -109,13 +109,10 @@ class Thenews
         }
     }
 
-public function setTheNewsDate(string $theNewsDate): void
-    {
-
-        // vérification d'un datetime valide (à perfectionner) grâce à une regex (expression régulière)
-        $regex = preg_grep("/^(\d{4})-(\d{2})-([\d]{2}) (\d{2}):([0-5]{1})([0-9]{1}):([0-5]{1})([0-9]{1})$/",[$theNewsDate]);
-        if(empty($regex)){
-            print("Format de date non valide");
+    public function setTheNewsDate(string $theNewsDate): void {
+        $newDate = new DateTime($theNewsDate);
+        if(!(is_object($newDate))){
+            print("Le format de la date n'est pas valide");
         }else {
             $this->theNewsDate = $theNewsDate;
         }

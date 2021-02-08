@@ -54,18 +54,25 @@
                 endif;
                 ?>
                 <hr>
-                <form action="" name="connection" method="post">
+                <form action="" method="post">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Votre login :</label>
-                        <input name="theUserLogin" type="text" class="form-control" id="exampleInputEmail1"
-                               aria-describedby="emailHelp" placeholder="Entrez votre login" required>
+                        <label for="theNewsTitle">Titre de la news :</label>
+                        <input name="theNewsTitle" type="text" class="form-control" placeholder="Votre titre"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="theNewsText">Texte de la news :</label>
+                        <textarea name="theNewsText" class="form-control" cols="20"
+                                  rows="10" placeholder="Votre texte"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="theNewsDate">Date :</label>
+                        <input name="theNewsDate" type="date" class="form-control" required>
+                    </div>
 
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Mot de passe</label>
-                        <input name="theUserPwd" type="password" class="form-control" id="exampleInputPassword1"
-                               placeholder="Entrez votre mot de passe" required>
-                    </div>
+                    <input name="theUser_idtheUser" value="<?= $_SESSION['idtheUser'] ?>>" type="hidden">
+
+
                     <button type="submit" class="btn btn-primary">Envoyer</button>
                 </form>
                 <hr>

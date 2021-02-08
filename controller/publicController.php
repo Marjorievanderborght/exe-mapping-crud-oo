@@ -31,7 +31,7 @@ if(isset($_GET['connect'])){
 // article detail view
 if(isset($_GET['idarticle'])&&ctype_digit($_GET['idarticle'])){
     // exercice's action
-$recupUniqNews = $ThenewsManager->UniqNewsById($_GET['idarticle']);
+$recupUniqNews = $thenewsManager->UniqNewsById($_GET['idarticle']);
 if(empty($recupUniqNews)){
     $error = "cette news n'existe pas ou n'existe plus";
 }else{
@@ -61,7 +61,7 @@ if(isset($_GET['idauteur'])&&ctype_digit($_GET['idauteur'])){
 
 
     // exercice's action
-    $recupAllNewsByAuthor = $ThenewsManager->selectTheNewsByAuthor($iduser);
+    $recupAllNewsByAuthor = $thenewsManager->selectTheNewsByAuthor($iduser);
     if(empty($recupAllNewsByAuthor)){
         $error= "pas de news existantes pour cet auteur";
     }else{
@@ -74,7 +74,7 @@ if(isset($_GET['idauteur'])&&ctype_digit($_GET['idauteur'])){
     require_once "../view/public/auteurPublicView.php";
     exit();
 }
-$recupAllTheNews = $ThenewsManager->readAllTheNews();
+$recupAllTheNews = $thenewsManager->readAllTheNews();
 if(empty($recupAllTheNews)){
     $error = "Pas de news existantes";
 }else{

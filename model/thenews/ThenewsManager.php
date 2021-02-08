@@ -1,3 +1,4 @@
+  
 <?php
 
 
@@ -118,5 +119,10 @@ public static function cutTheText(string $text, int $nbChars): string{
     $cutText = substr($text,0,$nbChars);
     return $cutText = substr($cutText,0,strrpos($cutText," "));
 }
+
+public static function nl2br(string $text): string {
+    return nl2br($text);
+}
     }
+    
      
