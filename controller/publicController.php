@@ -1,24 +1,24 @@
 <?php
 /*
- * Public's controller
+ * Contrôleur public
  */
 
-// connect view
+// Vue de la connexion
 if(isset($_GET['connect'])){
-    // click to submit
+    // cliquez pour envoyer
     if(!empty($_POST)){
-        // create an instance and hydrate Theuser
+        // créez une instance et hydratez Theuser
         $recupUser = new Theuser($_POST);
-        // try to connect
+        // Essayer de se connecter
         $connectUser = $userManager->connectUser($recupUser);
-        // connect ok (strict true)
+        // connexion ok (strict true)
         if($connectUser===true){
             header("Location: ./");
             exit();
         }
-        // connect not ok without sql error (false)
+        // connexion non ok sans erreur SQL (false)
         if(!$connectUser){
-            $message = "Login et/ou mot de passe incorrecte";
+            $message = "Login et/ou mot de passe incorrect";
         // sql error
         }else{
             $message = $connectUser;
@@ -31,7 +31,12 @@ if(isset($_GET['connect'])){
 // article detail view
 if(isset($_GET['idarticle'])&&ctype_digit($_GET['idarticle'])){
     // exercice's action
-
+$recupUniqNews = $ThenewsManager->UniqNewsById($_GET['idarticle']);
+if(empty($recupUniqNews)){
+    $error = "cette news n'existe pas ou n'existe plus";
+}else{
+    $theNews[] = new Thenews($recupUniqNews);
+}
     // view
     require_once "../view/public/articlePublicView.php";
     exit();
@@ -56,12 +61,26 @@ if(isset($_GET['idauteur'])&&ctype_digit($_GET['idauteur'])){
 
 
     // exercice's action
+    $recupAllNewsByAuthor = $ThenewsManager->selectTheNewsByAuthor($iduser);
+    if(empty($recupAllNewsByAuthor)){
+        $error= "pas de news existantes pour cet auteur";
+    }else{
+        foreach($recupAllNewsByAuthor as $datas){
+            $afficherAllTheNewsByAuthor[] = new Thenews($datas);
+        }
+    }
 
     // view
     require_once "../view/public/auteurPublicView.php";
     exit();
 }
-
-
+$recupAllTheNews = $ThenewsManager->readAllTheNews();
+if(empty($recupAllTheNews)){
+    $error = "Pas de news existantes";
+}else{
+    foreach($recupAllTheNews as $datas){
+        $afficherAllTheNews[] = new Thenews($datas);
+    }
+}
 // home view
 require_once "../view/public/indexPublicView.php";
