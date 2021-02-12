@@ -57,15 +57,15 @@ if (isset($_GET['update']) && ctype_digit($_GET['update'])) {
 // delete article
 if (isset($_GET['delete']) && ctype_digit($_GET['delete'])) {
 
-    $theNewsUniq = $ThenewsManager->UniqNewsById($_GET['delete']);
+    $theNewsUniq = $thenewsManager->UniqNewsById($_GET['delete']);
     $theNews = new Thenews($theNewsUniq);
 
-    if ($theNews->getTheUser_idtheUser() !== $_SESSION['idtheUser']) {
+    if ($theNews->getTheUser_idtheUser() != $_SESSION['idtheUser']) {
         header("Location: ./");
     }
 
     if (isset($_GET['ok'])) {
-        $delete = $ThenewsManager->deleteTheNewsById($_GET['delete']);
+        $delete = $thenewsManager->deleteTheNewsById($_GET['delete']);
         if ($delete === true) {
             header("Location: ./");
             exit();
@@ -87,7 +87,7 @@ if (isset($_GET['idarticle']) && ctype_digit($_GET['idarticle'])) {
         $theNews = new Thenews($recupUniqNews);
     }
 
-    if ($theNews->getTheUser_idtheUser() !== $_SESSION['idtheUser']) {
+    if ($theNews->getTheUser_idtheUser() != $_SESSION['idtheUser']) {
         header("Location: ./");
     }
 
@@ -96,7 +96,7 @@ if (isset($_GET['idarticle']) && ctype_digit($_GET['idarticle'])) {
     exit();
 }
 
-$newsForTheUser = $thenewsManager->readAllTheNews();
+$newsForTheUser = $thenewsManager->selectTheNewsByAuthor($_SESSION['idtheUser']);
 if (!empty($newsForTheUser)) {
     foreach ($newsForTheUser as $item) {
         $newsOfUser[] = new Thenews($item);
