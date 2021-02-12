@@ -52,7 +52,8 @@ class Thenews
     }
 
     //Setters
-    public function setIdTheNews(int $idTheNews): void{
+    public function setIdTheNews(int $idTheNews): void
+    {
         $this->idTheNews= $idTheNews;
     }
 
@@ -83,7 +84,8 @@ class Thenews
         if(!(is_object($newDate))){
             print("Le format de la date n'est pas valide");
         }else {
-            $this->theNewsDate = $theNewsDate;
+           // $newDate->format('Y-m-d H:i:s');
+            $this->theNewsDate = $newDate->format('Y-m-d H:i:s');
         }
     }
     public function setTheUser_idTheUser(int $theUser_idTheUser): void

@@ -36,14 +36,14 @@ if (isset($_GET['update']) && ctype_digit($_GET['update'])) {
     $theNewsUniq = $thenewsManager->UniqNewsById($_GET['update']);
     $theNews = new Thenews($theNewsUniq);
 
-    if ($theNews->getTheUser_idtheUser() !== $_SESSION['idtheUser']) {
+    if ($theNews->getTheUser_idtheUser() != $_SESSION['idtheUser']) {
         header("Location: ./");
     }
 
     if (!empty($_POST)) {
-        var_dump($_POST);
+        //var_dump($_POST);
         $UpdateTheNews = new Thenews($_POST);
-        $update = $ThenewsManager->updateTheNewsById($UpdateTheNews, $_GET['update']);
+        $update = $thenewsManager->updateTheNewsById($UpdateTheNews, $_GET['update']);
 
         if ($update === true) {
             header("Location: ./");

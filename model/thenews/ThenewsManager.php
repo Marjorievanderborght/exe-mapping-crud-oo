@@ -95,7 +95,7 @@ public function deleteTheNewsById(int $id) {
 //Mise à jour d'une news par son ID
 public function updateTheNewsById(Thenews $theNews, int $idTheNews){
     if($idTheNews == $theNews->getIdTheNews()){
-        $query = "UPDATE thenews SET theNewsTitle = :theNewsTitle,theNewsText= :theNewsText,theNewsDate= :theNewsDate,theUser_idtheUser= :theUser_idtheUser WHERE idtheNews :idTheNews";
+        $query = "UPDATE thenews SET theNewsTitle = :theNewsTitle,theNewsText= :theNewsText,theNewsDate= :theNewsDate,theUser_idtheUser= :theUser_idtheUser WHERE idtheNews= :idTheNews";
         $prepare= $this->db->prepare($query);
         $prepare->bindValue("idTheNews",$theNews->getIdTheNews(),PDO::PARAM_INT);
         $prepare->bindValue("theNewsTitle",$theNews->getTheNewsTitle(),PDO::PARAM_STR);
