@@ -30,17 +30,18 @@ class ThenewsManager
     }
 
 
-// Lecture de toutes les News
+// Lecture de toutes les News affichées par la date du plus récent au plus ancien
 public function readAllTheNews(): Array {
     $query = "SELECT * FROM thenews ORDER BY theNewsDate DESC";
-    $recupAll = $this->db->query($query);
-    if($recupAll->rowCount()) {
-        return $recupAll->fetchAll(PDO::FETCH_ASSOC);
+    $recupAllTheNews = $this->db->query($query);
+    if($recupAllTheNews->rowCount()) {
+        return $recupAllTheNews->fetchAll(PDO::FETCH_ASSOC);
     }else{
         return [];
     }
 }
-// Sélection d'une News par son id
+
+// Sélection de News par son id
 public function UniqNewsById(int $id): Array{
     // préparation de la requête
     $query = "SELECT * FROM thenews WHERE idtheNews=?";
@@ -54,8 +55,8 @@ public function UniqNewsById(int $id): Array{
     // pas de résultats
     return [];
 }
-//Sélection d'une News par son auteur
-public function selectTheNewsByAuthor($id): array {
+//Sélection de News par son auteur
+public function selectTheNewsByAuthor(int $id): array {
     $query = "SELECT * FROM thenews WHERE theUser_idtheUser = $id ORDER BY theNewsDate DESC";
     $read = $this->db->query($query);
     if ($read->rowCount()) {
@@ -79,9 +80,6 @@ public function insertNews(Thenews $datas){
     } catch (Exception $e){
             return $e->getMessage();
     }
-
-
-    
 }
 //Suppression d'une News par son ID
 public function deleteTheNewsById(int $id) {

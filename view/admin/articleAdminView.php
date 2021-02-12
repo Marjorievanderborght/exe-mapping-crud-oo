@@ -52,14 +52,14 @@
                 <p>La partie <i>// detail admin article</i> de l'<strong>adminController</strong> devra également être modifié</p>
                 <hr>
                 <h4> <?= $theNews->getTheNewsTitle() ?></h4>
-                <p><?= ThenewsManager($theNews->getTheNewsText()) ?></p>
+                <p><?= ThenewsManager::nl2br($theNews->getTheNewsText()) ?></p>
                 <h5><a href="?update=<?= $theNews->getIdTheNews() ?>">Modifier</a> | <a
                         href="?delete=<?= $theNews->getIdTheNews() ?>">Supprimer</a></h5>
                 <h5>Le <?= $theNews->getTheNewsDate() ?></h5>
 
-
                 <hr>
                 <a href="#page-top">Retour en haut</a>
+                <hr>
                 <hr>
             </div>
 

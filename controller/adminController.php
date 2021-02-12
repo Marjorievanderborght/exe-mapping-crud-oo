@@ -4,15 +4,15 @@
  */
 
 // Disconnect
-if(isset($_GET['disconnect'])){
-    if(TheuserManager::disconnectUser()){
+if (isset($_GET['disconnect'])) {
+    if (TheuserManager::disconnectUser()) {
         header("Location: ./");
         exit();
     }
 }
 
 // create News
-if(isset($_GET['create'])){
+if (isset($_GET['create'])) {
 
     // exercice's action
     if (!empty($_POST)) {
@@ -77,23 +77,33 @@ if (isset($_GET['delete']) && ctype_digit($_GET['delete'])) {
 }
 
 // detail admin article
-if(isset($_GET['idarticle'])&&ctype_digit($_GET['idarticle'])){
+if (isset($_GET['idarticle']) && ctype_digit($_GET['idarticle'])) {
 
     // exercice's action
     $recupUniqNews = $thenewsManager->UniqNewsById($_GET['idarticle']);
-    if(empty($recupUniqNews)){
+    if (empty($recupUniqNews)) {
         $error = "Cette news n'existe pas ou n'existe plus";
-    }else {
+    } else {
         $theNews = new Thenews($recupUniqNews);
     }
 
-    if ($theNews->getTheUser_idTheUser() !== $_SESSION['idtheUser']) {
+    if ($theNews->getTheUser_idtheUser() !== $_SESSION['idtheUser']) {
         header("Location: ./");
     }
 
     // form view
     require_once "../view/admin/articleAdminView.php";
     exit();
+}
+
+$newsForTheUser = $thenewsManager->readAllTheNews();
+if (!empty($newsForTheUser)) {
+    foreach ($newsForTheUser as $item) {
+        $newsOfUser[] = new Thenews($item);
+    }
+
+} else {
+    $error = "Pas encore de news";
 }
 
 // homepage admin view
