@@ -55,8 +55,8 @@
                 <?php if (!empty($newsOfUser)) :
                     foreach ($newsOfUser as $item): ?>
                         <h4><?= $item->getTheNewsTitle() ?></h4>
-                        <p><?= ThenewsManager::cutTheText($item->getTheNewsText(), 150) ?> ... <a
-                                    href="?idarticle=<?= $item->getIdTheNews() ?>">Lire la suite -
+                        <p><?= ThenewsManager::cutTheText($item->getTheNewsText(), 150) ?><a
+                                    href="?idarticle=<?= $item->getIdTheNews() ?>">... Lire la suite -
                                 modifier/supprimer</a></p>
                         <h5>Par <a href="?idauteur=<?= $item->gettheUser_idtheUser() ?>"> <?= $thenewsManager->selectTheUserLog($item->getTheUser_idtheUser()) ?></a></h5>      
                         <h5>Le <?= $item->getTheNewsDate() ?></h5>
